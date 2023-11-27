@@ -171,7 +171,7 @@ int main(int argc, char *argv[]) {
 
     if (block->data == NULL) {
       char msg[64];
-      snprintf(msg, 64, "\nError while allocating memory for block %d", i);
+      snprintf(msg, 64, "\nError while allocating memory for block %d\n", i);
       perror(msg);
       exit(1);
     }
