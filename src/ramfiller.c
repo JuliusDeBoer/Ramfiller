@@ -184,7 +184,7 @@ int main(int argc, char *argv[]) {
       char msg[64];
       snprintf(msg, 64, "\nError while allocating memory for block %d\n", i);
       perror(msg);
-      exit(1);
+      exit(EXIT_FAILURE);
     }
   }
 
