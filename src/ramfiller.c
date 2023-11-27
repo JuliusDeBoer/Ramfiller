@@ -206,5 +206,17 @@ int main(int argc, char *argv[]) {
     destroyThread(&thread);
   }
 
+	printf("Deallocating memory...");
+	fflush(stdout);
+
+	block = thread.block;
+	Block* next;
+
+	while(block != NULL) {
+		next = block->next;
+		free(block);
+		block = next;
+	}
+
   return 0;
 }
