@@ -115,7 +115,7 @@ void destroyThread(Thread *thread) {
 int main(int argc, char *argv[]) {
   if (argc <= 1) {
     printUsage(argv[0]);
-    return 1;
+    return EXIT_FAILURE;
   }
 
   long sizeInGib = -1;
@@ -127,18 +127,18 @@ int main(int argc, char *argv[]) {
   for (int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "-h") == 0 || strcmp(argv[i], "--help") == 0) {
       printUsage(argv[0]);
-      exit(0);
+      exit(EXIT_SUCCESS);
     } else if (strcmp(argv[i], "-b") == 0 ||
                strcmp(argv[i], "--block-size") == 0) {
       i++;
       if (i < argc) {
         printf("%s needs a second argument!\n", argv[i - 1]);
-        exit(0);
+        exit(EXIT_SUCCESS);
       }
       blockSize = strtol(argv[i], NULL, 0);
       if (blockSize <= 0) {
         printf("Block size has to be a possitive integers\n");
-        exit(1);
+        exit(EXIT_FAILURE);
       }
     } else if (strcmp(argv[i], "-u") == 0 ||
                strcmp(argv[i], "--dont-update") == 0) {
@@ -147,21 +147,21 @@ int main(int argc, char *argv[]) {
       i++;
       if (i >= argc) {
         printf("%s needs a second argument!\n", argv[i - 1]);
-        exit(1);
+        exit(EXIT_FAILURE);
       }
       thread.delay = strtol(argv[i], NULL, 0);
     } else {
       sizeInGib = strtol(argv[i], NULL, 0);
       if (sizeInGib <= 0) {
         printf("Size has to be a possitive integers\n");
-        exit(1);
+        exit(EXIT_FAILURE);
       }
     }
   }
 
   if (sizeInGib <= 0) {
     printf("Please enter a size!\n");
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
   printf("Allocating %luGB of memory...", sizeInGib);
@@ -217,17 +217,17 @@ int main(int argc, char *argv[]) {
     destroyThread(&thread);
   }
 
-	printf("Deallocating memory...");
-	fflush(stdout);
+  printf("Deallocating memory...");
+  fflush(stdout);
 
-	block = thread.block;
-	Block* next;
+  block = thread.block;
+  Block *next;
 
-	while(block != NULL) {
-		next = block->next;
-		free(block);
-		block = next;
-	}
+  while (block != NULL) {
+    next = block->next;
+    free(block);
+    block = next;
+  }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
