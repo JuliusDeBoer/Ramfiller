@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef WIN32 // Windows specific
+// Terrible hack to have both windows and unix threads
+
+#ifdef WIN32 // Windows
 #include <windows.h>
 #define THREAD_ID HANDLE
 #define SLEEP(t) Sleep(t)
 
-#else // Unix specific
+#else // Unix
 #include <pthread.h>
 #include <unistd.h>
 #define THREAD_ID pthread_t
@@ -38,6 +40,14 @@ typedef struct Thread {
   Block *block;
 } Thread;
 
+/// Prints a usage message
+///
+/// Usage:
+/// \code
+/// 	printUsage(argv[0])
+/// \endcode
+///
+/// \param programName The name of the program.
 void printUsage(char *programName) {
   printf("RamFiller %s\n"
          "Does what it says on the tin. It fills up ram\n\n"
@@ -57,6 +67,7 @@ void printUsage(char *programName) {
          PROJ_VERSION, programName);
 }
 
+/// Keep refreshing the memory block
 void *keepAlive(void *arg) {
   Thread *thread = arg;
 
